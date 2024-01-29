@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add your today Tasks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-image: url('hero.jpg');
+        }
+    </style>
+</head>
+<body>    
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-text-success bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container mt-4 col-6 r-4">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter your today Tasks" aria-label="Recipient's username" aria-describedby="button-addon2" id="task-input">
+                <button id="add-btn" class="btn btn-outline-success" type="button" id="button-addon2">Add</button>
+            </div>
+            <ul id="parent-List" class="list-group" style="display:none;">
+                <!-- Tasks will be dynamically added here -->
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        let addbtn = document.getElementById("add-btn");
+        addbtn.addEventListener("click", addTasks);
+
+        function addTasks() {
+            let taskInput = document.getElementById("task-input");
+            let currentChapterName = taskInput.value;
+
+            if (currentChapterName.trim() !== "") {
+                let newLi = document.createElement("li");
+                newLi.className = "list-group-item d-flex justify-content-between";
+                newLi.innerHTML = `<h3 class="flex-grow-1">${currentChapterName}</h3>
+                        <button class="btn btn-outline-warning mx-3" onclick="editChapter(this)">Edit</button>
+                        <button class="btn btn-outline-danger" onclick="addChapter(this)">Remove</button>`;
+
+                let parentList = document.getElementById("parent-List");
+                parentList.appendChild(newLi);
+
+                // Clear the input field
+                taskInput.value = '';
+
+                // Show the task list after adding the first task
+                parentList.style.display = 'block';
+            }
+        }
+
+        function addChapter(addElement) {
+            addElement.parentElement.remove();
+        }
+
+        function editChapter(currentElement) {
+            let currentChapterName = currentElement.parentElement.querySelector('h3');
+            
+            if (currentElement.textContent === "Done") {
+                currentElement.textContent = "Edit";
+                currentChapterName.textContent = currentChapterName.nextElementSibling.value;
+                currentChapterName.nextElementSibling.remove();
+            } else {
+                currentElement.textContent = "Done";
+                let currentInput = document.createElement("input");
+                currentInput.type = 'text';
+                currentInput.className = 'form-control';
+                currentInput.value = currentChapterName.textContent;
+
+                currentElement.parentElement.insertBefore(currentInput, currentChapterName.nextElementSibling);
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
